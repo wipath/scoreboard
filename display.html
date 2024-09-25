@@ -4,35 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rugby Scoreboard - Display Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #34495e;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #ecf0f1;
+            font-size: 48px;
+        }
+
+        .team {
+            display: inline-block;
+            width: 40%;
+            margin: 20px;
+            background-color: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .team h2 {
+            font-size: 36px;
+            margin: 10px 0;
+            color: #e74c3c;
+        }
+
+        .team p {
+            font-size: 60px;
+            margin: 20px 0;
+        }
+
+        .time {
+            margin-top: 30px;
+        }
+
+        .time span {
+            font-size: 36px;
+            color: #f39c12;
+        }
+    </style>
 </head>
 <body>
     <h1>Rugby Scoreboard</h1>
 
-    <!-- Display area for the scoreboard -->
-    <div>
+    <div class="team" id="team1Display">
         <h2 id="team1NameDisplay">Team 1</h2>
         <p id="team1ScoreDisplay">0</p>
     </div>
 
-    <div>
+    <div class="team" id="team2Display">
         <h2 id="team2NameDisplay">Team 2</h2>
         <p id="team2ScoreDisplay">0</p>
     </div>
 
-    <div>
+    <div class="time">
         <h2>Game Time: <span id="gameTimeDisplay">00:00</span></h2>
     </div>
 
     <script>
         function updateDisplay() {
-            // Retrieve the data from localStorage
             const team1Name = localStorage.getItem('team1Name');
             const team2Name = localStorage.getItem('team2Name');
             const team1Score = localStorage.getItem('team1Score');
             const team2Score = localStorage.getItem('team2Score');
             const gameTime = localStorage.getItem('gameTime');
 
-            // Update the display elements
             document.getElementById('team1NameDisplay').textContent = team1Name || "Team 1";
             document.getElementById('team1ScoreDisplay').textContent = team1Score || "0";
             document.getElementById('team2NameDisplay').textContent = team2Name || "Team 2";
@@ -40,8 +80,7 @@
             document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
         }
 
-        // Call updateDisplay regularly to refresh the data
-        setInterval(updateDisplay, 1000); // Refresh every second
+        setInterval(updateDisplay, 1000);
     </script>
 </body>
 </html>
