@@ -3,75 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Rugby Scoreboard - Control Page</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Control Page</h1>
-        <form id="controlForm">
-            <div class="form-group">
-                <label for="teamA">Team A Name:</label>
-                <input type="text" id="teamA" name="teamA">
-            </div>
-            <div class="form-group">
-                <label for="scoreA">Team A Score:</label>
-                <input type="number" id="scoreA" name="scoreA">
-            </div>
-            <div class="form-group">
-                <label for="teamB">Team B Name:</label>
-                <input type="text" id="teamB" name="teamB">
-            </div>
-            <div class="form-group">
-                <label for="scoreB">Team B Score:</label>
-                <input type="number" id="scoreB" name="scoreB">
-            </div>
-            <div class="form-group">
-                <label for="fontColor">Font Color:</label>
-                <input type="color" id="fontColor" name="fontColor">
-            </div>
-            <div class="form-group">
-                <label for="backgroundColor">Background Color:</label>
-                <input type="color" id="backgroundColor" name="backgroundColor">
-            </div>
-            <div class="form-group">
-                <label for="teamFont">Team Name Font:</label>
-                <input type="text" id="teamFont" name="teamFont" placeholder="e.g., Arial, sans-serif">
-            </div>
-            <div class="form-group">
-                <label for="teamFontSize">Team Name Font Size:</label>
-                <input type="text" id="teamFontSize" name="teamFontSize" placeholder="e.g., 2em">
-            </div>
-            <div class="form-group">
-                <label for="scoreFont">Score Font:</label>
-                <input type="text" id="scoreFont" name="scoreFont" placeholder="e.g., Courier New, monospace">
-            </div>
-            <div class="form-group">
-                <label for="scoreFontSize">Score Font Size:</label>
-                <input type="text" id="scoreFontSize" name="scoreFontSize" placeholder="e.g., 3em">
-            </div>
-            <button type="button" onclick="updateScoreboard()">Update Scoreboard</button>
-        </form>
+    <h1>Control Page</h1>
+
+    <!-- Input fields for team names -->
+    <div>
+        <label for="team1Name">Team 1 Name:</label>
+        <input type="text" id="team1Name" placeholder="Enter Team 1 Name">
     </div>
+    <div>
+        <label for="team2Name">Team 2 Name:</label>
+        <input type="text" id="team2Name" placeholder="Enter Team 2 Name">
+    </div>
+
+    <!-- Input fields for scores -->
+    <div>
+        <label for="team1Score">Team 1 Score:</label>
+        <input type="number" id="team1Score" value="0">
+    </div>
+    <div>
+        <label for="team2Score">Team 2 Score:</label>
+        <input type="number" id="team2Score" value="0">
+    </div>
+
+    <!-- Input field for game time -->
+    <div>
+        <label for="gameTime">Game Time:</label>
+        <input type="text" id="gameTime" placeholder="Enter game time (e.g., 45:00)">
+    </div>
+
+    <!-- Button to update the display -->
+    <button onclick="updateScoreboard()">Update Scoreboard</button>
+
     <script>
         function updateScoreboard() {
-            const form = document.getElementById('controlForm');
-            const formData = new FormData(form);
-            const data = {};
-            formData.forEach((value, key) => data[key] = value);
+            // Get values from the input fields
+            const team1Name = document.getElementById('team1Name').value;
+            const team2Name = document.getElementById('team2Name').value;
+            const team1Score = document.getElementById('team1Score').value;
+            const team2Score = document.getElementById('team2Score').value;
+            const gameTime = document.getElementById('gameTime').value;
 
-            fetch('update_scoreboard.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      alert('Scoreboard updated!');
-                  }
-              }).catch(error => console.error('Error:', error));
+            // Store the values in localStorage
+            localStorage.setItem('team1Name', team1Name);
+            localStorage.setItem('team2Name', team2Name);
+            localStorage.setItem('team1Score', team1Score);
+            localStorage.setItem('team2Score', team2Score);
+            localStorage.setItem('gameTime', gameTime);
         }
     </script>
 </body>
