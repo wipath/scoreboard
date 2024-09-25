@@ -3,46 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Rugby Scoreboard - Display Page</title>
 </head>
 <body>
-    <div id="scoreboard" class="scoreboard">
-        <h1 id="teamAName" class="team-name teamA">Team A</h1>
-        <p id="scoreA" class="score scoreA">0</p>
-        <h1 id="teamBName" class="team-name teamB">Team B</h1>
-        <p id="scoreB" class="score scoreB">0</p>
+    <h1>Rugby Scoreboard</h1>
+
+    <!-- Display area for the scoreboard -->
+    <div>
+        <h2 id="team1NameDisplay">Team 1</h2>
+        <p id="team1ScoreDisplay">0</p>
     </div>
+
+    <div>
+        <h2 id="team2NameDisplay">Team 2</h2>
+        <p id="team2ScoreDisplay">0</p>
+    </div>
+
+    <div>
+        <h2>Game Time: <span id="gameTimeDisplay">00:00</span></h2>
+    </div>
+
     <script>
-        async function fetchScoreboard() {
-            const response = await fetch('get_scoreboard.php');
-            const data = await response.json();
+        function updateDisplay() {
+            // Retrieve the data from localStorage
+            const team1Name = localStorage.getItem('team1Name');
+            const team2Name = localStorage.getItem('team2Name');
+            const team1Score = localStorage.getItem('team1Score');
+            const team2Score = localStorage.getItem('team2Score');
+            const gameTime = localStorage.getItem('gameTime');
 
-            document.getElementById('teamAName').textContent = data.teamA;
-            document.getElementById('scoreA').textContent = data.scoreA;
-            document.getElementById('teamBName').textContent = data.teamB;
-            document.getElementById('scoreB').textContent = data.scoreB;
-
-            document.body.style.backgroundColor = data.backgroundColor;
-
-            document.getElementById('teamAName').style.color = data.fontColor;
-            document.getElementById('scoreA').style.color = data.fontColor;
-            document.getElementById('teamBName').style.color = data.fontColor;
-            document.getElementById('scoreB').style.color = data.fontColor;
-
-            document.getElementById('teamAName').style.fontFamily = data.teamFont;
-            document.getElementById('scoreA').style.fontFamily = data.scoreFont;
-            document.getElementById('teamBName').style.fontFamily = data.teamFont;
-            document.getElementById('scoreB').style.fontFamily = data.scoreFont;
-
-            document.getElementById('teamAName').style.fontSize = data.teamFontSize;
-            document.getElementById('scoreA').style.fontSize = data.scoreFontSize;
-            document.getElementById('teamBName').style.fontSize = data.teamFontSize;
-            document.getElementById('scoreB').style.fontSize = data.scoreFontSize;
+            // Update the display elements
+            document.getElementById('team1NameDisplay').textContent = team1Name || "Team 1";
+            document.getElementById('team1ScoreDisplay').textContent = team1Score || "0";
+            document.getElementById('team2NameDisplay').textContent = team2Name || "Team 2";
+            document.getElementById('team2ScoreDisplay').textContent = team2Score || "0";
+            document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
         }
 
-        setInterval(fetchScoreboard, 1000);
-        fetchScoreboard();  // Initial fetch
+        // Call updateDisplay regularly to refresh the data
+        setInterval(updateDisplay, 1000); // Refresh every second
     </script>
 </body>
 </html>
