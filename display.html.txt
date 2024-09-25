@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="scoreboard" class="scoreboard">
+        <h1 id="teamAName" class="team-name teamA">Team A</h1>
+        <p id="scoreA" class="score scoreA">0</p>
+        <h1 id="teamBName" class="team-name teamB">Team B</h1>
+        <p id="scoreB" class="score scoreB">0</p>
+    </div>
+    <script>
+        async function fetchScoreboard() {
+            const response = await fetch('get_scoreboard.php');
+            const data = await response.json();
+
+            document.getElementById('teamAName').textContent = data.teamA;
+            document.getElementById('scoreA').textContent = data.scoreA;
+            document.getElementById('teamBName').textContent = data.teamB;
+            document.getElementById('scoreB').textContent = data.scoreB;
+
+            document.body.style.backgroundColor = data.backgroundColor;
+
+            document.getElementById('teamAName').style.color = data.fontColor;
+            document.getElementById('scoreA').style.color = data.fontColor;
+            document.getElementById('teamBName').style.color = data.fontColor;
+            document.getElementById('scoreB').style.color = data.fontColor;
+
+            document.getElementById('teamAName').style.fontFamily = data.teamFont;
+            document.getElementById('scoreA').style.fontFamily = data.scoreFont;
+            document.getElementById('teamBName').style.fontFamily = data.teamFont;
+            document.getElementById('scoreB').style.fontFamily = data.scoreFont;
+
+            document.getElementById('teamAName').style.fontSize = data.teamFontSize;
+            document.getElementById('scoreA').style.fontSize = data.scoreFontSize;
+            document.getElementById('teamBName').style.fontSize = data.teamFontSize;
+            document.getElementById('scoreB').style.fontSize = data.scoreFontSize;
+        }
+
+        setInterval(fetchScoreboard, 1000);
+        fetchScoreboard();  // Initial fetch
+    </script>
+</body>
+</html>

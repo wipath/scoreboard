@@ -1,0 +1,8 @@
+{
+    "teamA": "Team A",
+    "scoreA": 0,
+    "teamB": "Team B",
+    "scoreB": 0,
+    "fontColor": "#000000",
+    "backgroundColor": "#ffffff"
+}
