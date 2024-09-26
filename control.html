@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One New Zealand Warriors - Control Page</title>
+    <title>Rugby Scoreboard - Control Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,13 +23,13 @@
 
         label {
             display: inline-block;
-            width: 200px;
+            width: 150px;
             text-align: right;
         }
 
         input[type="text"], input[type="number"] {
             padding: 5px;
-            width: 250px;
+            width: 200px;
             margin-left: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -92,11 +92,22 @@
 
     <!-- Timer controls -->
     <div class="input-group">
-        <label for="gameTime">Set Game Time (in seconds):</label>
-        <input type="number" id="gameTime" placeholder="Enter game time (e.g., 300 for 5 mins)">
+        <label for="gameTime">Set Game Time (in minutes):</label>
+        <input type="number" id="gameTime" placeholder="Enter game time (e.g., 5 for 5 mins)">
     </div>
+
+    <!-- Timer mode selector -->
+    <div class="input-group">
+        <label for="timerMode">Timer Mode:</label>
+        <select id="timerMode">
+            <option value="countdown">Countdown</option>
+            <option value="countup">Count Up</option>
+        </select>
+    </div>
+
     <button onclick="startTimer()">Start Timer</button>
     <button onclick="pauseTimer()">Pause Timer</button>
+    <button onclick="addExtraTime()">Add Extra Time</button>
 
     <!-- Ad banner control -->
     <div class="input-group">
@@ -110,7 +121,10 @@
         let team1Score = localStorage.getItem('team1Score') ? parseInt(localStorage.getItem('team1Score')) : 0;
         let team2Score = localStorage.getItem('team2Score') ? parseInt(localStorage.getItem('team2Score')) : 0;
         let timer;
+        let gameTime = 0;
         let isPaused = true;
+        let isExtraTime = false;
+        let extraTime = 0;
 
         // Display initial scores
         document.getElementById('team1Score').textContent = team1Score;
@@ -146,43 +160,59 @@
             localStorage.setItem('adBanner', adText);
         }
 
-        // Convert seconds to hh:mm:ss format
+        // Convert seconds to mm:ss format
         function formatTime(seconds) {
-            let hrs = Math.floor(seconds / 3600);
-            let mins = Math.floor((seconds % 3600) / 60);
+            let mins = Math.floor(seconds / 60);
             let secs = seconds % 60;
 
             // Ensure double digits for display
-            hrs = hrs < 10 ? "0" + hrs : hrs;
             mins = mins < 10 ? "0" + mins : mins;
             secs = secs < 10 ? "0" + secs : secs;
 
-            return `${hrs}:${mins}:${secs}`;
+            return `${mins}:${secs}`;
         }
 
-        // Start the countdown timer
+        // Start the countdown or count-up timer
         function startTimer() {
             if (!isPaused) return; // Prevent multiple timers running
 
             isPaused = false;
-            let gameTime = parseInt(document.getElementById('gameTime').value) || 0;
-            localStorage.setItem('gameTime', formatTime(gameTime)); // Store initial time in hh:mm:ss format
+            let mode = document.getElementById('timerMode').value;
+            gameTime = parseInt(document.getElementById('gameTime').value) * 60 || 0;
+            let elapsedTime = 0;
 
-            timer = setInterval(() => {
-                if (gameTime > 0) {
-                    gameTime--;
-                    localStorage.setItem('gameTime', formatTime(gameTime)); // Update time in hh:mm:ss format
-                    console.log("Time Left: " + formatTime(gameTime)); // For debugging purposes
-                } else {
-                    clearInterval(timer);
-                }
-            }, 1000);
+            if (mode === 'countup') {
+                timer = setInterval(() => {
+                    elapsedTime++;
+                    localStorage.setItem('gameTime', formatTime(elapsedTime));
+                    console.log("Time Elapsed: " + formatTime(elapsedTime)); // For debugging purposes
+                }, 1000);
+            } else if (mode === 'countdown') {
+                timer = setInterval(() => {
+                    if (gameTime > 0) {
+                        gameTime--;
+                        localStorage.setItem('gameTime', formatTime(gameTime));
+                        console.log("Time Left: " + formatTime(gameTime)); // For debugging purposes
+                    } else if (!isExtraTime) {
+                        // Pause if extra time hasn't started
+                        clearInterval(timer);
+                    }
+                }, 1000);
+            }
         }
 
         // Pause the timer
         function pauseTimer() {
             clearInterval(timer);
             isPaused = true;
+        }
+
+        // Add extra time (increments by 5 minutes)
+        function addExtraTime() {
+            extraTime += 5 * 60; // Add 5 minutes in seconds
+            isExtraTime = true;
+            gameTime += extraTime;
+            console.log("Extra Time Added: 5 minutes");
         }
     </script>
 </body>
