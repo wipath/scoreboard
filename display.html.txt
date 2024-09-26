@@ -3,46 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Page</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div id="scoreboard" class="scoreboard">
-        <h1 id="teamAName" class="team-name teamA">Team A</h1>
-        <p id="scoreA" class="score scoreA">0</p>
-        <h1 id="teamBName" class="team-name teamB">Team B</h1>
-        <p id="scoreB" class="score scoreB">0</p>
-    </div>
-    <script>
-        async function fetchScoreboard() {
-            const response = await fetch('get_scoreboard.php');
-            const data = await response.json();
-
-            document.getElementById('teamAName').textContent = data.teamA;
-            document.getElementById('scoreA').textContent = data.scoreA;
-            document.getElementById('teamBName').textContent = data.teamB;
-            document.getElementById('scoreB').textContent = data.scoreB;
-
-            document.body.style.backgroundColor = data.backgroundColor;
-
-            document.getElementById('teamAName').style.color = data.fontColor;
-            document.getElementById('scoreA').style.color = data.fontColor;
-            document.getElementById('teamBName').style.color = data.fontColor;
-            document.getElementById('scoreB').style.color = data.fontColor;
-
-            document.getElementById('teamAName').style.fontFamily = data.teamFont;
-            document.getElementById('scoreA').style.fontFamily = data.scoreFont;
-            document.getElementById('teamBName').style.fontFamily = data.teamFont;
-            document.getElementById('scoreB').style.fontFamily = data.scoreFont;
-
-            document.getElementById('teamAName').style.fontSize = data.teamFontSize;
-            document.getElementById('scoreA').style.fontSize = data.scoreFontSize;
-            document.getElementById('teamBName').style.fontSize = data.teamFontSize;
-            document.getElementById('scoreB').style.fontSize = data.scoreFontSize;
+    <title>Rugby Scoreboard - Display Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #34495e;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 50px;
         }
 
-        setInterval(fetchScoreboard, 1000);
-        fetchScoreboard();  // Initial fetch
+        h1 {
+            color: #ecf0f1;
+            font-size: 48px;
+        }
+
+        .team {
+            display: inline-block;
+            width: 40%;
+            margin: 20px;
+            background-color: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .team h2 {
+            font-size: 36px;
+            margin: 10px 0;
+            color: #e74c3c;
+        }
+
+        .team p {
+            font-size: 60px;
+            margin: 20px 0;
+        }
+
+        .time {
+            margin-top: 30px;
+        }
+
+        .time span {
+            font-size: 36px;
+            color: #f39c12;
+        }
+
+        /* Scrolling Text (Ad Banner) */
+        .ad-banner {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: #f39c12;
+            font-size: 24px;
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ad-banner span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scrollText 15s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Rugby Scoreboard</h1>
+
+    <div class="team" id="team1Display">
+        <h2 id="team1NameDisplay">Team 1</h2>
+        <p id="team1ScoreDisplay">0</p>
+    </div>
+
+    <div class="team" id="team2Display">
+        <h2 id="team2NameDisplay">Team 2</h2>
+        <p id="team2ScoreDisplay">0</p>
+    </div>
+
+    <div class="time">
+        <h2>Game Time: <span id="gameTimeDisplay">00:00</span></h2>
+        <h3 id="extraTimeDisplay" style="color: #e74c3c; display: none;">Extra Time: <span id="extraTime">00:00</span></h3>
+    </div>
+
+    <!-- Scrolling Ad Banner -->
+    <div class="ad-banner">
+        <span id="adBannerDisplay">Loading ad...</span>
+    </div>
+
+    <script>
+        function updateDisplay() {
+            // Get values from localStorage
+            const team1Name = localStorage.getItem('team1Name');
+            const team2Name = localStorage.getItem('team2Name');
+            const team1Score = localStorage.getItem('team1Score');
+            const team2Score = localStorage.getItem('team2Score');
+            const gameTime = localStorage.getItem('gameTime');
+            const adBannerText = localStorage.getItem('adBanner');
+            const extraTime = localStorage.getItem('extraTime') || "00:00";
+            const isExtraTime = extraTime !== "00:00"; // Check if extra time has started
+
+            // Update the display for team names and scores
+            document.getElementById('team1NameDisplay').textContent = team1Name || "Team 1";
+            document.getElementById('team1ScoreDisplay').textContent = team1Score || "0";
+            document.getElementById('team2NameDisplay').textContent = team2Name || "Team 2";
+            document.getElementById('team2ScoreDisplay').textContent = team2Score || "0";
+            document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
+
+            // Show extra time if applicable
+            if (isExtraTime) {
+                document.getElementById('extraTimeDisplay').style.display = 'block';
+                document.getElementById('extraTime').textContent = extraTime;
+            } else {
+                document.getElementById('extraTimeDisplay').style.display = 'none';
+            }
+
+            // Update ad banner text
+            document.getElementById('adBannerDisplay').textContent = adBannerText || "Exclusive Rugby Merchandise | 50% OFF | Use Code: TRY50 | Visit www.rugbystore.com";
+        }
+
+        // Continuously refresh the display every second
+        setInterval(updateDisplay, 1000);
     </script>
 </body>
 </html>
