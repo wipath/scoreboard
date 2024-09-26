@@ -133,19 +133,33 @@
             }
         }
 
+        // Convert seconds to hh:mm:ss format
+        function formatTime(seconds) {
+            let hrs = Math.floor(seconds / 3600);
+            let mins = Math.floor((seconds % 3600) / 60);
+            let secs = seconds % 60;
+
+            // Ensure double digits for display
+            hrs = hrs < 10 ? "0" + hrs : hrs;
+            mins = mins < 10 ? "0" + mins : mins;
+            secs = secs < 10 ? "0" + secs : secs;
+
+            return `${hrs}:${mins}:${secs}`;
+        }
+
         // Start the countdown timer
         function startTimer() {
             if (!isPaused) return; // Prevent multiple timers running
 
             isPaused = false;
             let gameTime = parseInt(document.getElementById('gameTime').value) || 0;
-            localStorage.setItem('gameTime', gameTime); // Store initial time
+            localStorage.setItem('gameTime', formatTime(gameTime)); // Store initial time in hh:mm:ss format
 
             timer = setInterval(() => {
                 if (gameTime > 0) {
                     gameTime--;
-                    localStorage.setItem('gameTime', gameTime);
-                    console.log("Time Left: " + gameTime); // For debugging purposes
+                    localStorage.setItem('gameTime', formatTime(gameTime)); // Update time in hh:mm:ss format
+                    console.log("Time Left: " + formatTime(gameTime)); // For debugging purposes
                 } else {
                     clearInterval(timer);
                 }
