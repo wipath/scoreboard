@@ -27,7 +27,7 @@
             text-align: right;
         }
 
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], input[type="file"] {
             padding: 5px;
             width: 250px;
             margin-left: 10px;
@@ -113,6 +113,13 @@
         <input type="text" id="adText" placeholder="Enter ad text">
     </div>
     <button onclick="updateAdBanner()">Update Ad Banner</button>
+
+    <!-- Upload Background Image -->
+    <div class="input-group">
+        <label for="backgroundImage">Upload Background Image:</label>
+        <input type="file" id="backgroundImage" accept="image/*">
+    </div>
+    <button onclick="uploadBackground()">Upload Background</button>
 
     <script>
         let team1Score = 0;
@@ -203,6 +210,24 @@
         function resetExtraTime() {
             localStorage.setItem('extraTime', '0');
             document.getElementById('extraTime').value = '';
+        }
+
+        // Upload and store background image in localStorage
+        function uploadBackground() {
+            const fileInput = document.getElementById('backgroundImage');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64Image = event.target.result;
+                    localStorage.setItem('backgroundImage', base64Image);  // Store image as Base64
+                    alert("Background image updated successfully!");
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Please select an image file.");
+            }
         }
 
         // Format time as mm:ss
