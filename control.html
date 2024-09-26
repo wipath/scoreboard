@@ -93,16 +93,16 @@
     <!-- Timer controls -->
     <div class="input-group">
         <label for="gameTime">Set Game Time (in minutes):</label>
-        <input type="number" id="gameTime" placeholder="Enter game time in minutes">
+        <input type="number" id="gameTime" placeholder="Enter game time (e.g., 80 for 80 mins)">
     </div>
     <button onclick="startTimer()">Start Timer</button>
     <button onclick="pauseTimer()">Pause Timer</button>
     <button onclick="resetTimer()">Reset Timer</button>
 
-    <!-- Extra Time controls -->
+    <!-- Extra time controls -->
     <div class="input-group">
         <label for="extraTime">Set Extra Time (in minutes):</label>
-        <input type="number" id="extraTime" placeholder="Enter extra time in minutes">
+        <input type="number" id="extraTime" placeholder="Enter extra time">
     </div>
     <button onclick="updateExtraTime()">Set Extra Time</button>
     <button onclick="resetExtraTime()">Reset Extra Time</button>
@@ -115,12 +115,11 @@
     <button onclick="updateAdBanner()">Update Ad Banner</button>
 
     <script>
-        // Initialize scores and timer variables
-        let team1Score = localStorage.getItem('team1Score') ? parseInt(localStorage.getItem('team1Score')) : 0;
-        let team2Score = localStorage.getItem('team2Score') ? parseInt(localStorage.getItem('team2Score')) : 0;
+        let team1Score = 0;
+        let team2Score = 0;
         let timer;
         let isPaused = true;
-        let extraTime = 0;
+        let alertSound = new Audio('alert.mp3');  // Load the sound
 
         // Display initial scores
         document.getElementById('team1Score').textContent = team1Score;
@@ -130,6 +129,7 @@
         function updateTeamNames() {
             const team1Name = document.getElementById('team1Name').value;
             const team2Name = document.getElementById('team2Name').value;
+
             localStorage.setItem('team1Name', team1Name);
             localStorage.setItem('team2Name', team2Name);
         }
@@ -138,12 +138,12 @@
         function changeScore(team, change) {
             if (team === 'team1') {
                 team1Score += change;
-                if (team1Score < 0) team1Score = 0; // Prevent negative score
+                if (team1Score < 0) team1Score = 0;  // Prevent negative score
                 document.getElementById('team1Score').textContent = team1Score;
                 localStorage.setItem('team1Score', team1Score);
             } else if (team === 'team2') {
                 team2Score += change;
-                if (team2Score < 0) team2Score = 0; // Prevent negative score
+                if (team2Score < 0) team2Score = 0;  // Prevent negative score
                 document.getElementById('team2Score').textContent = team2Score;
                 localStorage.setItem('team2Score', team2Score);
             }
@@ -155,24 +155,24 @@
             localStorage.setItem('adBanner', adText);
         }
 
-        // Function to convert minutes to mm:ss format
-        function formatTime(minutes) {
-            let mins = Math.floor(minutes);
-            let secs = Math.floor((minutes % 1) * 60);
-            return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
         // Start the countdown timer
         function startTimer() {
-            if (!isPaused) return;
+            if (!isPaused) return;  // Prevent multiple timers running
 
-            let gameTime = parseInt(document.getElementById('gameTime').value) || 0;
+            let gameTime = parseInt(document.getElementById('gameTime').value) * 60 || 0;
             isPaused = false;
+
             timer = setInterval(() => {
                 if (gameTime > 0) {
-                    gameTime -= 1 / 60;
-                    localStorage.setItem('gameTime', formatTime(gameTime));
-                    console.log("Time Left: " + formatTime(gameTime)); // Debug
+                    gameTime--;
+                    let formattedTime = formatTime(gameTime);
+                    localStorage.setItem('gameTime', formattedTime);
+
+                    // Play sound at 40 and 80 minutes
+                    let minutesElapsed = Math.floor(gameTime / 60);
+                    if (minutesElapsed === 40 || minutesElapsed === 80) {
+                        alertSound.play();  // Play sound
+                    }
                 } else {
                     clearInterval(timer);
                 }
@@ -185,24 +185,35 @@
             isPaused = true;
         }
 
-        // Reset the game timer
+        // Reset the timer
         function resetTimer() {
-            pauseTimer();
+            clearInterval(timer);
             localStorage.setItem('gameTime', '00:00');
+            document.getElementById('gameTime').value = '';
+            isPaused = true;
         }
 
-        // Update and set extra time
+        // Set extra time
         function updateExtraTime() {
-            const extraMinutes = parseInt(document.getElementById('extraTime').value) || 0;
-            extraTime = extraMinutes;
-            localStorage.setItem('extraTime', extraMinutes);
+            const extraTime = parseInt(document.getElementById('extraTime').value) || 0;
+            localStorage.setItem('extraTime', extraTime);
         }
 
         // Reset extra time
         function resetExtraTime() {
-            extraTime = 0;
-            document.getElementById('extraTime').value = '';
             localStorage.setItem('extraTime', '0');
+            document.getElementById('extraTime').value = '';
+        }
+
+        // Format time as mm:ss
+        function formatTime(seconds) {
+            let minutes = Math.floor(seconds / 60);
+            let secs = seconds % 60;
+
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            secs = secs < 10 ? '0' + secs : secs;
+
+            return `${minutes}:${secs}`;
         }
     </script>
 </body>
