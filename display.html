@@ -95,7 +95,7 @@
 
     <!-- Scrolling Ad Banner -->
     <div class="ad-banner">
-        <span>Exclusive Rugby Merchandise | 50% OFF | Use Code: TRY50 | Visit www.rugbystore.com</span>
+        <span id="adBannerDisplay">Loading ad...</span>
     </div>
 
     <script>
@@ -106,6 +106,7 @@
             const team1Score = localStorage.getItem('team1Score');
             const team2Score = localStorage.getItem('team2Score');
             const gameTime = localStorage.getItem('gameTime');
+            const adBannerText = localStorage.getItem('adBanner');
 
             // Update the display
             document.getElementById('team1NameDisplay').textContent = team1Name || "Team 1";
@@ -113,6 +114,7 @@
             document.getElementById('team2NameDisplay').textContent = team2Name || "Team 2";
             document.getElementById('team2ScoreDisplay').textContent = team2Score || "0";
             document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00:00";
+            document.getElementById('adBannerDisplay').textContent = adBannerText || "Exclusive Rugby Merchandise | 50% OFF | Use Code: TRY50 | Visit www.rugbystore.com";
         }
 
         // Continuously refresh the display every second
