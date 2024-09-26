@@ -77,7 +77,7 @@
             if (enteredUsername === validUsername && enteredPassword === validPassword) {
                 // If credentials are correct, redirect to the control page
                 errorElement.textContent = '';  // Clear any previous error
-                window.location.href = "control-page.html";  // Redirect to the control page
+                window.location.href = "control.html";  // Redirect to the control page
             } else {
                 // If credentials are wrong, show an error message
                 errorElement.textContent = 'Invalid Username or Password';
