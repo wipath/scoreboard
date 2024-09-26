@@ -62,28 +62,4 @@
     </div>
 
     <div class="time">
-        <h2>Game Time: <span id="gameTimeDisplay">00:00</span></h2>
-    </div>
-
-    <script>
-        function updateDisplay() {
-            // Get values from localStorage
-            const team1Name = localStorage.getItem('team1Name');
-            const team2Name = localStorage.getItem('team2Name');
-            const team1Score = localStorage.getItem('team1Score');
-            const team2Score = localStorage.getItem('team2Score');
-            const gameTime = localStorage.getItem('gameTime');
-
-            // Update the display
-            document.getElementById('team1NameDisplay').textContent = team1Name || "Team 1";
-            document.getElementById('team1ScoreDisplay').textContent = team1Score || "0";
-            document.getElementById('team2NameDisplay').textContent = team2Name || "Team 2";
-            document.getElementById('team2ScoreDisplay').textContent = team2Score || "0";
-            document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
-        }
-
-        // Continuously refresh the display every second
-        setInterval(updateDisplay, 1000);
-    </script>
-</body>
-</html>
+        <h2>Game Time: <span id="gameTimeDisplay">00:00</span></h
