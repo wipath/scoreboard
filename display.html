@@ -51,7 +51,6 @@
             color: #f39c12;
         }
 
-        /* Extra time display */
         .extra-time {
             font-size: 24px;
             color: #f39c12;
@@ -132,8 +131,8 @@
             document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
 
             // Display extra time if enabled
-            if (extraTime && extraTime !== "00:00") {
-                document.getElementById('extraTimeDisplay').textContent = `+${extraTime.split(":")[1]}`;  // Display in "+5" format
+            if (extraTime && extraTime !== "0") {
+                document.getElementById('extraTimeDisplay').textContent = `+${extraTime}`;  // Display extra time in minutes
             } else {
                 document.getElementById('extraTimeDisplay').textContent = "";  // Hide extra time if not available
             }
