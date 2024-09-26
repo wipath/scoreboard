@@ -42,9 +42,20 @@
             margin-top: 30px;
         }
 
+        .time h2 {
+            font-size: 36px;
+        }
+
         .time span {
             font-size: 36px;
             color: #f39c12;
+        }
+
+        /* Extra time display */
+        .extra-time {
+            font-size: 24px;
+            color: #f39c12;
+            margin-top: 10px;
         }
 
         /* Scrolling Text (Ad Banner) */
@@ -89,9 +100,12 @@
         <p id="team2ScoreDisplay">0</p>
     </div>
 
+    <!-- Game time and extra time display -->
     <div class="time">
         <h2>Game Time: <span id="gameTimeDisplay">00:00</span></h2>
-        <h3 id="extraTimeDisplay" style="color: #e74c3c; display: none;">Extra Time: <span id="extraTime">00:00</span></h3>
+        <div class="extra-time">
+            <span id="extraTimeDisplay"></span>
+        </div>
     </div>
 
     <!-- Scrolling Ad Banner -->
@@ -107,26 +121,23 @@
             const team1Score = localStorage.getItem('team1Score');
             const team2Score = localStorage.getItem('team2Score');
             const gameTime = localStorage.getItem('gameTime');
+            const extraTime = localStorage.getItem('extraTime');
             const adBannerText = localStorage.getItem('adBanner');
-            const extraTime = localStorage.getItem('extraTime') || "00:00";
-            const isExtraTime = extraTime !== "00:00"; // Check if extra time has started
 
-            // Update the display for team names and scores
+            // Update the display
             document.getElementById('team1NameDisplay').textContent = team1Name || "Team 1";
             document.getElementById('team1ScoreDisplay').textContent = team1Score || "0";
             document.getElementById('team2NameDisplay').textContent = team2Name || "Team 2";
             document.getElementById('team2ScoreDisplay').textContent = team2Score || "0";
             document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
 
-            // Show extra time if applicable
-            if (isExtraTime) {
-                document.getElementById('extraTimeDisplay').style.display = 'block';
-                document.getElementById('extraTime').textContent = extraTime;
+            // Display extra time if enabled
+            if (extraTime && extraTime !== "00:00") {
+                document.getElementById('extraTimeDisplay').textContent = `+${extraTime.split(":")[1]}`;  // Display in "+5" format
             } else {
-                document.getElementById('extraTimeDisplay').style.display = 'none';
+                document.getElementById('extraTimeDisplay').textContent = "";  // Hide extra time if not available
             }
 
-            // Update ad banner text
             document.getElementById('adBannerDisplay').textContent = adBannerText || "Exclusive Rugby Merchandise | 50% OFF | Use Code: TRY50 | Visit www.rugbystore.com";
         }
 
