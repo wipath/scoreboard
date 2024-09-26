@@ -52,9 +52,9 @@
         }
 
         .extra-time {
-            font-size: 24px;
-            color: #f39c12;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-size: 28px;
+            color: #f1c40f;
         }
 
         /* Scrolling Text (Ad Banner) */
@@ -99,12 +99,9 @@
         <p id="team2ScoreDisplay">0</p>
     </div>
 
-    <!-- Game time and extra time display -->
     <div class="time">
         <h2>Game Time: <span id="gameTimeDisplay">00:00</span></h2>
-        <div class="extra-time">
-            <span id="extraTimeDisplay"></span>
-        </div>
+        <div class="extra-time" id="extraTimeDisplay">+0</div>
     </div>
 
     <!-- Scrolling Ad Banner -->
@@ -129,14 +126,7 @@
             document.getElementById('team2NameDisplay').textContent = team2Name || "Team 2";
             document.getElementById('team2ScoreDisplay').textContent = team2Score || "0";
             document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
-
-            // Display extra time if enabled
-            if (extraTime && extraTime !== "0") {
-                document.getElementById('extraTimeDisplay').textContent = `+${extraTime}`;  // Display extra time in minutes
-            } else {
-                document.getElementById('extraTimeDisplay').textContent = "";  // Hide extra time if not available
-            }
-
+            document.getElementById('extraTimeDisplay').textContent = '+' + (extraTime || '0');
             document.getElementById('adBannerDisplay').textContent = adBannerText || "Exclusive Rugby Merchandise | 50% OFF | Use Code: TRY50 | Visit www.rugbystore.com";
         }
 
