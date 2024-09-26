@@ -90,7 +90,8 @@
     </div>
 
     <div class="time">
-        <h2>Game Time: <span id="gameTimeDisplay">00:00:00</span></h2>
+        <h2>Game Time: <span id="gameTimeDisplay">00:00</span></h2>
+        <h3 id="extraTimeDisplay" style="color: #e74c3c; display: none;">Extra Time: <span id="extraTime">00:00</span></h3>
     </div>
 
     <!-- Scrolling Ad Banner -->
@@ -107,13 +108,25 @@
             const team2Score = localStorage.getItem('team2Score');
             const gameTime = localStorage.getItem('gameTime');
             const adBannerText = localStorage.getItem('adBanner');
+            const extraTime = localStorage.getItem('extraTime') || "00:00";
+            const isExtraTime = extraTime !== "00:00"; // Check if extra time has started
 
-            // Update the display
+            // Update the display for team names and scores
             document.getElementById('team1NameDisplay').textContent = team1Name || "Team 1";
             document.getElementById('team1ScoreDisplay').textContent = team1Score || "0";
             document.getElementById('team2NameDisplay').textContent = team2Name || "Team 2";
             document.getElementById('team2ScoreDisplay').textContent = team2Score || "0";
-            document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00:00";
+            document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
+
+            // Show extra time if applicable
+            if (isExtraTime) {
+                document.getElementById('extraTimeDisplay').style.display = 'block';
+                document.getElementById('extraTime').textContent = extraTime;
+            } else {
+                document.getElementById('extraTimeDisplay').style.display = 'none';
+            }
+
+            // Update ad banner text
             document.getElementById('adBannerDisplay').textContent = adBannerText || "Exclusive Rugby Merchandise | 50% OFF | Use Code: TRY50 | Visit www.rugbystore.com";
         }
 
