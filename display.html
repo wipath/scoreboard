@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-image: url('images.jpeg'); /* Replace with your image URL or path */
             background-size: cover; /* Ensures the background covers the entire page */
             background-position: center; /* Centers the background image */
             color: #ecf0f1;
@@ -121,6 +120,7 @@
             const gameTime = localStorage.getItem('gameTime');
             const extraTime = localStorage.getItem('extraTime');
             const adBannerText = localStorage.getItem('adBanner');
+            const backgroundImage = localStorage.getItem('backgroundImage'); // Retrieve background image from localStorage
 
             // Update the display
             document.getElementById('team1NameDisplay').textContent = team1Name || "Team 1";
@@ -130,6 +130,11 @@
             document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
             document.getElementById('extraTimeDisplay').textContent = '+' + (extraTime || '0');
             document.getElementById('adBannerDisplay').textContent = adBannerText || "Exclusive Rugby Merchandise | 50% OFF | Use Code: TRY50 | Visit www.rugbystore.com";
+
+            // Set the background image if it's available
+            if (backgroundImage) {
+                document.body.style.backgroundImage = `url(${backgroundImage})`;
+            }
         }
 
         // Continuously refresh the display every second
