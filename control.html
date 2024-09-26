@@ -58,6 +58,7 @@
 <body>
     <h1>Control Page</h1>
 
+    <!-- Input fields for team names -->
     <div class="input-group">
         <label for="team1Name">Team 1 Name:</label>
         <input type="text" id="team1Name" placeholder="Enter Team 1 Name">
@@ -66,6 +67,8 @@
         <label for="team2Name">Team 2 Name:</label>
         <input type="text" id="team2Name" placeholder="Enter Team 2 Name">
     </div>
+
+    <button onclick="updateTeamNames()">Update Team Names</button>
 
     <!-- Buttons to control Team 1's score -->
     <div class="score-group">
@@ -87,22 +90,33 @@
         </div>
     </div>
 
-    <!-- Input field for game time -->
+    <!-- Timer controls -->
     <div class="input-group">
-        <label for="gameTime">Game Time:</label>
-        <input type="text" id="gameTime" placeholder="Enter game time (e.g., 45:00)">
+        <label for="gameTime">Set Game Time (in seconds):</label>
+        <input type="number" id="gameTime" placeholder="Enter game time (e.g., 300 for 5 mins)">
     </div>
-
-    <button onclick="updateGameTime()">Update Game Time</button>
+    <button onclick="startTimer()">Start Timer</button>
+    <button onclick="pauseTimer()">Pause Timer</button>
 
     <script>
         // Initialize scores from localStorage or set them to 0
         let team1Score = localStorage.getItem('team1Score') ? parseInt(localStorage.getItem('team1Score')) : 0;
         let team2Score = localStorage.getItem('team2Score') ? parseInt(localStorage.getItem('team2Score')) : 0;
+        let timer;
+        let isPaused = true;
 
         // Display initial scores
         document.getElementById('team1Score').textContent = team1Score;
         document.getElementById('team2Score').textContent = team2Score;
+
+        // Function to update team names
+        function updateTeamNames() {
+            const team1Name = document.getElementById('team1Name').value;
+            const team2Name = document.getElementById('team2Name').value;
+
+            localStorage.setItem('team1Name', team1Name);
+            localStorage.setItem('team2Name', team2Name);
+        }
 
         // Function to change the score for a team
         function changeScore(team, change) {
@@ -119,10 +133,29 @@
             }
         }
 
-        // Update game time
-        function updateGameTime() {
-            const gameTime = document.getElementById('gameTime').value;
-            localStorage.setItem('gameTime', gameTime);
+        // Start the countdown timer
+        function startTimer() {
+            if (!isPaused) return; // Prevent multiple timers running
+
+            isPaused = false;
+            let gameTime = parseInt(document.getElementById('gameTime').value) || 0;
+            localStorage.setItem('gameTime', gameTime); // Store initial time
+
+            timer = setInterval(() => {
+                if (gameTime > 0) {
+                    gameTime--;
+                    localStorage.setItem('gameTime', gameTime);
+                    console.log("Time Left: " + gameTime); // For debugging purposes
+                } else {
+                    clearInterval(timer);
+                }
+            }, 1000);
+        }
+
+        // Pause the timer
+        function pauseTimer() {
+            clearInterval(timer);
+            isPaused = true;
         }
     </script>
 </body>
