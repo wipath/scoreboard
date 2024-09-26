@@ -98,6 +98,13 @@
     <button onclick="startTimer()">Start Timer</button>
     <button onclick="pauseTimer()">Pause Timer</button>
 
+    <!-- Ad banner control -->
+    <div class="input-group">
+        <label for="adText">Ad Banner Text:</label>
+        <input type="text" id="adText" placeholder="Enter ad text">
+    </div>
+    <button onclick="updateAdBanner()">Update Ad Banner</button>
+
     <script>
         // Initialize scores from localStorage or set them to 0
         let team1Score = localStorage.getItem('team1Score') ? parseInt(localStorage.getItem('team1Score')) : 0;
@@ -131,6 +138,12 @@
                 document.getElementById('team2Score').textContent = team2Score;
                 localStorage.setItem('team2Score', team2Score);
             }
+        }
+
+        // Function to update ad banner
+        function updateAdBanner() {
+            const adText = document.getElementById('adText').value;
+            localStorage.setItem('adBanner', adText);
         }
 
         // Convert seconds to hh:mm:ss format
