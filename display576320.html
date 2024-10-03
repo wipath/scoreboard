@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=576, initial-scale=1.0">
+    <title>Rugby Scoreboard - Display Page</title>
+    <style>
+        /* Outer container to simulate a 576x320 window size */
+        .window-simulation {
+            width: 576px;
+            height: 320px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 1px solid #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Inner content styles */
+        .content {
+            font-family: 'Arial', sans-serif;
+            background-size: cover;
+            background-position: center;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 10px;
+        }
+
+        h1 {
+            color: #000000;
+            font-size: 24px;
+        }
+
+        .team {
+            display: inline-block;
+            width: 40%;
+            margin: 10px;
+            background-color: rgba(44, 62, 80, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .team h2 {
+            font-size: 18px;
+            margin: 5px 0;
+            color: #e74c3c;
+        }
+
+        .team p {
+            font-size: 30px;
+            margin: 10px 0;
+        }
+
+        .time {
+            margin-top: 15px;
+        }
+
+        .time h2 {
+            font-size: 18px;
+        }
+
+        .time span {
+            font-size: 18px;
+            color: #f39c12;
+        }
+
+        .extra-time {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #f1c40f;
+        }
+
+        /* Scrolling Text (Ad Banner) */
+        .ad-banner {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(44, 62, 80, 0.8);
+            color: #f39c12;
+            font-size: 18px;
+            padding: 5px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ad-banner span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scrollText 15s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Outer container simulating the window size -->
+    <div class="window-simulation">
+        <!-- Inner content of the page -->
+        <div class="content">
+            <h1>Rugby Scoreboard</h1>
+
+            <div class="team" id="team1Display">
+                <h2 id="team1NameDisplay">Team 1</h2>
+                <p id="team1ScoreDisplay">0</p>
+            </div>
+
+            <div class="team" id="team2Display">
+                <h2 id="team2NameDisplay">Team 2</h2>
+                <p id="team2ScoreDisplay">0</p>
+            </div>
+
+            <div class="time">
+                <h2>Game Time: <span id="gameTimeDisplay">00:00</span></h2>
+                <div class="extra-time" id="extraTimeDisplay">+0</div>
+            </div>
+
+            <!-- Scrolling Ad Banner -->
+            <div class="ad-banner">
+                <span id="adBannerDisplay">Loading ad...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateDisplay() {
+            // Get values from localStorage
+            const team1Name = localStorage.getItem('team1Name');
+            const team2Name = localStorage.getItem('team2Name');
+            const team1Score = localStorage.getItem('team1Score');
+            const team2Score = localStorage.getItem('team2Score');
+            const gameTime = localStorage.getItem('gameTime');
+            const extraTime = localStorage.getItem('extraTime');
+            const adBannerText = localStorage.getItem('adBanner');
+            const backgroundImage = localStorage.getItem('backgroundImage');
+
+            // Update the display
+            document.getElementById('team1NameDisplay').textContent = team1Name || "Team 1";
+            document.getElementById('team1ScoreDisplay').textContent = team1Score || "0";
+            document.getElementById('team2NameDisplay').textContent = team2Name || "Team 2";
+            document.getElementById('team2ScoreDisplay').textContent = team2Score || "0";
+            document.getElementById('gameTimeDisplay').textContent = gameTime || "00:00";
+            document.getElementById('extraTimeDisplay').textContent = '+' + (extraTime || '0');
+            document.getElementById('adBannerDisplay').textContent = adBannerText || "Exclusive Rugby Merchandise | 50% OFF | Use Code: TRY50 | Visit www.rugbystore.com";
+
+            // Set the background image if it's available
+            if (backgroundImage) {
+                document.body.style.backgroundImage = `url(${backgroundImage})`;
+            }
+        }
+
+        // Continuously refresh the display every second
+        setInterval(updateDisplay, 1000);
+    </script>
+</body>
+</html>
